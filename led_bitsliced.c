@@ -131,7 +131,6 @@ void add_constants(bitsliced_state* state, u8 round)
         0x34, 0x29, 0x12, 0x24, 0x08, 0x11, 0x22, 0x04
     };
 
-    /** ============== start your code here ============ **/
     /*
     * | s[ 0]s[ 1]s[ 2]s[ 3]       s[ 4]s[ 5]s[ 6]s[ 7] + constantRC543   s[ 8]s[ 9]s[10]s[11]   s[12]s[13]s[14]s[15] |
     * | s[16]s[17]s[18]s[19] + 1   s[20]s[21]s[22]s[23] + constantRC210  s[24]s[25]s[26]s[27]   s[28]s[29]s[30]s[31] |
@@ -154,7 +153,6 @@ void add_constants(bitsliced_state* state, u8 round)
 
     add_roundkey(state, constant_state); //reuse
 
-    /** ============= end your code here =============== **/
 }
 
 
@@ -321,7 +319,6 @@ bitsliced_gfelement mc1(bitsliced_gfelement val)
 bitsliced_gfelement mc2(bitsliced_gfelement val)
 {
     bitsliced_gfelement result;
-    /** ============== start your code here ============ **/
 
     u64 x3 = val.value[0];
     u64 x2 = val.value[1];
@@ -338,7 +335,6 @@ bitsliced_gfelement mc2(bitsliced_gfelement val)
     result.value[2] = y1;
     result.value[3] = y0;
 
-    /** ============= end your code here =============== **/
     return result;
 }
 
@@ -348,7 +344,6 @@ bitsliced_gfelement mc2(bitsliced_gfelement val)
 bitsliced_gfelement mc4(bitsliced_gfelement val)
 {
     bitsliced_gfelement result;
-    /** ============== start your code here ============ **/
 
     u64 x3 = val.value[0];
     u64 x2 = val.value[1];
@@ -365,7 +360,6 @@ bitsliced_gfelement mc4(bitsliced_gfelement val)
     result.value[2] = y1;
     result.value[3] = y0;
 
-    /** ============= end your code here =============== **/
     return result;
 }
 
@@ -375,7 +369,6 @@ bitsliced_gfelement mc4(bitsliced_gfelement val)
 bitsliced_gfelement mc8(bitsliced_gfelement val)
 {
     bitsliced_gfelement result;
-    /** ============== start your code here ============ **/
 
     u64 x3 = val.value[0];
     u64 x2 = val.value[1];
@@ -392,7 +385,6 @@ bitsliced_gfelement mc8(bitsliced_gfelement val)
     result.value[2] = y1;
     result.value[3] = y0;
 
-    /** ============= end your code here =============== **/
     return result;
 }
 
@@ -402,7 +394,6 @@ bitsliced_gfelement mc8(bitsliced_gfelement val)
 bitsliced_gfelement mc5(bitsliced_gfelement val)
 {
     bitsliced_gfelement result;
-    /** ============== start your code here ============ **/
 
     //Alternative:
     //    result = mc4(val);
@@ -427,7 +418,6 @@ bitsliced_gfelement mc5(bitsliced_gfelement val)
     result.value[2] = y1;
     result.value[3] = y0;
 
-    /** ============= end your code here =============== **/
     return result;
 }
 
@@ -538,18 +528,17 @@ bitsliced_column mix_single_column(const bitsliced_gfelement A, const bitsliced_
 {
     bitsliced_column result;
 
-    bitsliced_gfelement fourA = mc4(A);
     /**
         fourA.value[0] equals (4*A)[0]
         fourA.value[1] equals (4*A)[1]
         fourA.value[2] equals (4*A)[2]
         fourA.value[3] equals (4*A)[3]
     **/
+    bitsliced_gfelement fourA = mc4(A);
     bitsliced_gfelement oneB  = mc1(B);
     bitsliced_gfelement twoC  = mc2(C);
     bitsliced_gfelement twoD  = mc2(D);
 
-    /** ============== start your code here ============ **/
     bitsliced_gfelement eightA = mc8(A);
     bitsliced_gfelement sixB = mc6(B);
     bitsliced_gfelement fiveC = mc5(C);
@@ -575,15 +564,11 @@ bitsliced_column mix_single_column(const bitsliced_gfelement A, const bitsliced_
     for(int j=0; j < 4; j++)
         result.value[j + 12] = twoA.value[j] ^ twoB.value[j] ^ fifteenC.value[j] ^ elevenD.value[j];
 
-    /** ============= end your code here =============== **/
     return result;
 }
 
 /**================================================
-    Updates the whole bitsliced_column, once mix_single_column
-    is implemented correctly!
-
-    You don't have to take care of this function!
+    Updates the whole bitsliced_column
 ================================================**/
 void mix_columns_serial(bitsliced_state* state)
 {
